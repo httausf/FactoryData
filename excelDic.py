@@ -9,23 +9,19 @@
 import xlrd,xlwt
 import os
 
+# 返回所有excel文件名字
 def file_names():
 	path_dir = os.path.join(os.path.abspath('.'), 'path')
-	files = [x for x in os.listdir(path_dir) if os.path.splitext(x)[1]=='.xls']
+	files = [x for x in os.listdir(path_dir) if os.path.splitext(x)[1] == '.xls' or os.path.splitext(x)[1] == 'xlsx']
+	files = list(map(lambda x : os.path.join(path_dir, x), files))
 	return files
 
-def fist_row(new_sheet):
-	new_sheet.write(0, 0, '日期')
-	new_sheet.write(0, 1, '产品名称')
-	new_sheet.write(0, 2, '产品型号')
-	new_sheet.write(0, 3, '产品规格')
-	new_sheet.write(0, 4, '嵌件')
-	new_sheet.write(0, 5, '对账数量')
-	new_sheet.write(0, 6, '实发数量')
-	new_sheet.write(0, 7, '单价')
-	new_sheet.write(0, 8, '金额')
-	new_sheet.write(0, 9, '备注')
-	new_sheet.write(0, 9, '厂名')
+# 返回该文件名对应的厂名
+def fac_name(whole_filename):
+	filename = whole_filename.split('.')[0]
+	while(filename[0].isdigit()):
+		filename = filename[1:]
+	return filename.replace(' ', '')
 
 def get_value(sheet, r, c):
 	if sheet.cell_value(r, c):
